@@ -13,7 +13,7 @@ function _findPropertyNameByRegex(o, r) {
 function enableAutoPlayNext(selectors) {
   /*Pulls all classes that start with "Watch Next" */
   selectors.push('[aria-label="Credits überspringen"]'); // German version will have this text, most reliable
-  selectors.push('.atvwebplayersdk-skipelement-button'); // German version will have this text, most reliable
+  selectors.push('.atvwebplayersdk-nextupcard-button'); // German version will have this text, most reliable
 }
 
 function enableSkipTitleSequence(selectors) {

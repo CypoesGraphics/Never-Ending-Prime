@@ -38,44 +38,49 @@ function startMonitoringForSelectors(selectors, numTries) {
     console.log("NEP - OBSERVER")
     let selector = selectors.join(', ');
     let elems = document.querySelectorAll(selector);
+    // @elem : HTMLElement
     for (const elem of elems) {
-      console.log(elem.classList)
+      // console.log(elem.classList)
       const ariaLabel = elem.getAttribute("aria-label") || '';
       const testId = elem.getAttribute("data-testid") || '';
       const tooltip = elem.getAttribute("data-tooltip") || '';
-      console.log("NEP - Tooltip " + !tooltip);
+      const text = elem.text || '';
+      // console.log("NEP - Tooltip " + !tooltip);
       if (ariaLabel === "Credits überspringen" || ariaLabel === "Credits überspringen") {
-        console.log("NEP - SKIP " + elem.classList)
+        // console.log("NEP - SKIP " + elem.classList)
         elem.click();
         elem.dispatchEvent(new PointerEvent('click'));
         // Send an event that tries to trigger the react version of the action
         dispatchEventToBody('nextEpEvent');
-      } else if (testId === "skipButton") {
-        console.log("NEP - OVERLAY SKIP " + elem.classList)
-        doClick(elem).then(_ => {
-          doGetPlayButton();
-        });
+      } else if (elem.classList.contains('atvwebplayersdk-skipelement-button')) {
+        // console.log("NEP - OVERLAY SKIP " + elem.classList)
+        elem.click();
+        elem.remove();
+        elem.dispatchEvent(new PointerEvent('click'));
+        // doClick(elem).then(_ => {
+        //   doGetPlayButton();
+        // });
 
-        function doClick(n) {
-          return new Promise(function (resolve) {
-            resolve(n.firstChild.click());
-          });
-        }
+        // function doClick(n) {
+        //   return new Promise(function (resolve) {
+        //     resolve(n.click());
+        //   });
+        // }
 
-        function doGetPlayButton() {
-          let play = document.querySelectorAll('[data-testid="vilos-play_pause_button"]');
-          if (play) {
-            doClick(play)
-          }
-          // let evt = document.createEvent('Event');
-          // evt.initEvent('playEvent', true, false);
-          // // fire the event
-          // document.dispatchEvent(evt);
-        }
+        // function doGetPlayButton() {
+        //   let play = document.querySelectorAll('[aria-label="Pause"]')[0];
+        //   if (play) {
+        //     doClick(play)
+        //   }
+        //   let evt = document.createEvent('Event');
+        //   evt.initEvent('playEvent', true, false);
+        //   // fire the event
+        //   document.dispatchEvent(evt);
+        // }
 
         dispatchEventToBody('skipIntroEvent');
       } else {
-        console.log("NEP - NO ACTION FOUND FOR " + elem.classList);
+        // console.log("NEP - NO ACTION FOUND FOR " + elem.classList);
         elem.click();
         elem.dispatchEvent(new PointerEvent('click'));
       }
